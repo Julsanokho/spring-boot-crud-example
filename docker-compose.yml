@@ -1,0 +1,34 @@
+version: '3.8'
+services:
+  crudDB:
+    image: "mysql:8.0.31"
+    ports:
+      - "3307:3307"
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: snkh@22
+      MYSQL_DATABASE: productServiceDB
+      MYSQL_USER: user
+      MYSQL_PASSWORD: snkh@22
+    volumes:
+      - mysqldb-data:/var/lib/mysql
+    networks:
+      - backend
+
+  app:
+    build: .
+    restart: always
+    image: "spring-boot-crud-example"
+    ports:
+      - "8081:8081"
+    depends_on:
+      - crudDB
+    networks:
+      - backend
+
+volumes:
+  mysqldb-data:
+
+networks:
+    backend:
+      driver: bridge
